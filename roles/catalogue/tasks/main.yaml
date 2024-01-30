@@ -1,0 +1,44 @@
+- name: SETTING UP NODE JS APPLICATION
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: nodejs
+
+- name: USER AND DIRECTORY CREATION
+  ansible.builtin.import_role:
+   name: common
+   tasks_from: user-setup
+
+- name: USER AND DIRECTORY CREATION
+  ansible.builtin.import_role:
+   name: common
+   tasks_from: download
+
+- name: DEAMON-RELOAD SERVICE
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: ENABLING AND STARTING THE SERVICE
+  ansible.builtin.systemd_service:
+    name: catalogue
+    enabled: true
+
+
+- name: copy mongo repo to yum.repos.d
+  ansible.builtin.copy:
+    src: mongodb.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+
+- name: INSTALLING MONGO-REPO SHELL
+  ansible.builtin.yum:
+    name: mongodb-org-shell
+    state: present
+  
+- name: load catalogue data
+  ansible.builtin.command: mongo --host 172.31.43.139 < /app/schema/catalogue.js
+
+- name: restart catalogue
+  ansible.builtin.service:
+    name: catalogue
+    state: restarted
+    enabled: true

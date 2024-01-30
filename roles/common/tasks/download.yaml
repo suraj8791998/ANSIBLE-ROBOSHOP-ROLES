@@ -1,0 +1,20 @@
+- name: DOWNLOADING THE APPLICATION
+  ansible.builtin.get_url:
+    url: https://roboshop-builds.s3.amazonaws.com/catalogue.zip
+    dest: /tmp/catalogue.zip 
+
+- name: UNZIPPING THE APPLICATION 
+  ansible.builtin.unarchive:
+    src: //tmp/catalogue.zip 
+    dest: /app
+    remote_src: yes
+
+- name: INSTALLING THE DEPENDENCIES
+  ansible.builtin.command: npm install
+  args:
+    chdir: /app
+
+- name: "COPYING FILES TO {{component}} SERVICE"
+  ansible.builtin.copy:
+    src: "{{component}}".service
+    dest: /etc/systemd/system/{{component}}.service
