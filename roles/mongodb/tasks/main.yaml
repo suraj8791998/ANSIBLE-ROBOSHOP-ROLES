@@ -20,11 +20,11 @@
     regexp: '127.0.0.1'
     replace:  '0.0.0.0'
 
-- name: RESTARTING THE "{{component}}"
-  ansible.builtin.import_role:
-   name: common
-   tasks_from: systemd-service.yaml
-
+- name: RESTARTING THE MONGODB
+  ansible.builtin.service:
+   name: mongod
+   state: restarted
+  
 
 
 
