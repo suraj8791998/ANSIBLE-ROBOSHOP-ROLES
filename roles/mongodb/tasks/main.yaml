@@ -8,10 +8,11 @@
     name: mongodb-org
     state: installed
 
-- name: ENABLING AND STARTING THE "{{component}}"
-  ansible.builtin.import_role:
-    name: common
-    tasks_from: systemd-service.yaml
+- name: ENABLING AND STARTING THE MONGO-DB
+  ansible.builtin.service:
+    name: mongod
+    state: started
+    enabled: yes
 
 - name: REPLACING THE CONFIG FILE
   ansible.builtin.replace:
@@ -24,4 +25,6 @@
    name: common
    tasks_from: systemd-service.yaml
 
-   
+
+
+
