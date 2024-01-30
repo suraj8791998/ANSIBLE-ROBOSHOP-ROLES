@@ -1,0 +1,27 @@
+-  name: COPYING MONGO REPO
+   ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: INSTALLING MONGODB APPLICATION
+  ansible.builtin.yum:
+    name: mongodb-org
+    state: installed
+
+- name: ENABLING AND STARTING THE "{{component}}"
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: systemd-service.yaml
+
+- name: REPLACING THE CONFIG FILE
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace:  '0.0.0.0'
+
+- name: RESTARTING THE "{{component}}"
+  ansible.builtin.import_role:
+   name: common
+   tasks_from: systemd-service.yaml
+
+   

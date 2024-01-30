@@ -1,0 +1,6 @@
+- name: DEVELOPING ROBOSHOP PROJECT USING ANSIBLE ROLES
+  hosts: "{{component}}"
+  become: yes
+
+  roles:
+  - "{{component}}"
