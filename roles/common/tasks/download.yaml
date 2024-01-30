@@ -16,5 +16,5 @@
 
 - name: "COPYING FILES TO {{component}} SERVICE"
   ansible.builtin.copy:
-    src: "{{component}}".service
+    src: "{{component}}.service"
     dest: /etc/systemd/system/{{component}}.service
